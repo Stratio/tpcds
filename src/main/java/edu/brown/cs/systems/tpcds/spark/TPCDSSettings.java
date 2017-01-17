@@ -14,6 +14,8 @@ public class TPCDSSettings {
 	public boolean partitionTables;
 	public boolean clusterByPartitionColumns;
 	public boolean filterOutNullPartitionValues;
+	public int numPartitions;
+	public boolean usePartitionColumns;
 
 	private TPCDSSettings(Config config) {
 		scaleFactor = config.getInt("scaleFactor");
@@ -24,6 +26,8 @@ public class TPCDSSettings {
 		partitionTables = config.getBoolean("partitionTables");
 		clusterByPartitionColumns = config.getBoolean("clusterByPartitionColumns");
 		filterOutNullPartitionValues = config.getBoolean("filterOutNullPartitionValues");
+		numPartitions = config.getInt("numPartitions");
+		usePartitionColumns = config.getBoolean("usePartitionColumns");
 	}
 
 	/**
@@ -54,6 +58,8 @@ public class TPCDSSettings {
 		b.append(" partitionTables: " + partitionTables);
 		b.append(" clusterByPartitionColumns: " + clusterByPartitionColumns);
 		b.append(" filterOutNullPartitionValues: " + filterOutNullPartitionValues);
+		b.append(" numPartitions: " + numPartitions);
+		b.append(" usePartitionColumns: " + usePartitionColumns);
 		return b.toString();
 	}
 }
