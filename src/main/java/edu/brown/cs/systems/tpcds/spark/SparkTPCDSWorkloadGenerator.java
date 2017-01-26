@@ -36,7 +36,7 @@ public class SparkTPCDSWorkloadGenerator {
 		this.sqlContext = new HiveContext(sparkContext);
 		
 		// Load the tables into memory using the spark-sql-perf Tables code
-		this.tables = new Tables(sqlContext, settings.scaleFactor);
+		this.tables = new Tables(sqlContext, settings.scaleFactor, settings.numPartitions);
 		tables.createTemporaryTables(settings.dataLocation, settings.dataFormat, "");
 	}
 	

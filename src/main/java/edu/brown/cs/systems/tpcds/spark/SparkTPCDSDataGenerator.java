@@ -31,10 +31,10 @@ public class SparkTPCDSDataGenerator {
 		SparkConf conf = new SparkConf().setAppName("TPC-DS generateData");
 		SparkContext sc = new SparkContext(conf);
 		SQLContext sqlContext = new SQLContext(sc);
-		Tables tables = new Tables(sqlContext, settings.scaleFactor);
+		Tables tables = new Tables(sqlContext, settings.scaleFactor, settings.numPartitions);
 		tables.genData(settings.dataLocation, settings.dataFormat, settings.overwrite, settings.partitionTables,
 				settings.useDoubleForDecimal, settings.clusterByPartitionColumns,
-				settings.filterOutNullPartitionValues, "");
+				settings.filterOutNullPartitionValues, "", settings.usePartitionColumns);
 
 		sc.stop();
 	}

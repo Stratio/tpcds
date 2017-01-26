@@ -23,7 +23,7 @@ import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SQLContext, SaveMode}
 import edu.brown.cs.systems.tpcds.Dsdgen
 
-class Tables(sqlContext: SQLContext, scaleFactor: Int) extends Serializable {
+class Tables(sqlContext: SQLContext, scaleFactor: Int, defaultNumPartitions: Int) extends Serializable {
   import sqlContext.implicits._
 
   private val log = LoggerFactory.getLogger(getClass)
@@ -32,7 +32,7 @@ class Tables(sqlContext: SQLContext, scaleFactor: Int) extends Serializable {
 
   case class Table(name: String, partitionColumns: Seq[String], fields: StructField*) {
     val schema = StructType(fields)
-    val partitions = if (partitionColumns.isEmpty) 1 else 100
+    val partitions = if (partitionColumns.isEmpty) 1 else defaultNumPartitions
 
     def nonPartitioned: Table = {
       Table(name, Nil, fields : _*)
@@ -112,7 +112,8 @@ class Tables(sqlContext: SQLContext, scaleFactor: Int) extends Serializable {
         format: String,
         overwrite: Boolean,
         clusterByPartitionColumns: Boolean,
-        filterOutNullPartitionValues: Boolean): Unit = {
+        filterOutNullPartitionValues: Boolean,
+        usePartitionColumns: Boolean): Unit = {
       val mode = if (overwrite) SaveMode.Overwrite else SaveMode.Ignore
 
       val data = df(format != "text")
@@ -153,7 +154,7 @@ class Tables(sqlContext: SQLContext, scaleFactor: Int) extends Serializable {
         data.coalesce(1).write
       }
       writer.format(format).mode(mode)
-      if (partitionColumns.nonEmpty) {
+      if (partitionColumns.nonEmpty && usePartitionColumns) {
         writer.partitionBy(partitionColumns : _*)
       }
       println(s"Generating table $name in database to $location with save mode $mode.")
@@ -190,7 +191,8 @@ class Tables(sqlContext: SQLContext, scaleFactor: Int) extends Serializable {
       useDoubleForDecimal: Boolean,
       clusterByPartitionColumns: Boolean,
       filterOutNullPartitionValues: Boolean,
-      tableFilter: String = ""): Unit = {
+      tableFilter: String = "",
+      usePartitionColumns: Boolean): Unit = {
     var tablesToBeGenerated = if (partitionTables) {
       tables
     } else {
@@ -213,7 +215,7 @@ class Tables(sqlContext: SQLContext, scaleFactor: Int) extends Serializable {
     withSpecifiedDataType.foreach { table =>
       val tableLocation = s"$location/${table.name}"
       table.genData(tableLocation, format, overwrite, clusterByPartitionColumns,
-        filterOutNullPartitionValues)
+        filterOutNullPartitionValues, usePartitionColumns)
     }
   }
 

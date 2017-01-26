@@ -20,22 +20,24 @@ To configure the TPC-DS data set, there are a variety of configuration options. 
 
 The options of interest are as follows:
 
- - scaleFactor specifies the dataset size.  A scale factor of n generates approximately n GB of data.  Most data formats compress this quite effectively, so on disk the data will appear smaller (eg, Parque or Orc can compress by a factor of approximately 4).
+ - scaleFactor specifies the dataset size.  A scale factor of n generates approximately n GB of data.  Most data formats compress this quite effectively, so on disk the data will appear smaller (eg, Parquet or Orc can compress by a factor of approximately 4).
  - dataLocation specifics the location of the dataset.  Typically this will be in HDFS, and you can specify HDFS file locations as normal (eg, hdfs://<hostname>:<port>/<path>)
  - dataFormat specifies the format to store the data.  "parquet" and "orc" are good choices with high compression; "text" is also supported.
 
 The full (default) configuration options are as follows:
-	
+
 	tpcds {
-		scaleFactor = 1
-		dataLocation = "hdfs://127.0.0.1:9000/tpcds"
-		dataFormat = "parquet"
-		overwrite = true
-		partitionTables = false
-		useDoubleForDecimal = false
-		clusterByPartitionColumns = false
-		filterOutNullPartitionValues = false
-	}
+    	scaleFactor = 1
+    	dataLocation = "hdfs://127.0.0.1:9000/tpcds"
+    	dataFormat = "parquet"
+    	overwrite = false
+    	partitionTables = true
+    	useDoubleForDecimal = false
+    	clusterByPartitionColumns = false
+    	filterOutNullPartitionValues = false
+    	numPartitions = 1000
+    	usePartitionColumns = false
+    }
 	
 We have provided a couple of useful command line utilities, which are generated into the folder `target/appassembler/bin`:
 
