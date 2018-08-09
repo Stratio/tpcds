@@ -18,9 +18,9 @@ RUN git clone https://github.com/Stratio/tpcds.git \
 	&& cd tpcds \
 	&& /usr/local/apache-maven/apache-maven-3.3.9/bin/mvn clean package
 
-RUN wget -q https://d3kbcqa49mib13.cloudfront.net/spark-1.6.1-bin-hadoop2.6.tgz \
-	&& tar xzfv spark-1.6.1-bin-hadoop2.6.tgz \
-	&& rm spark-1.6.1-bin-hadoop2.6.tgz
+RUN wget -q https://d3kbcqa49mib13.cloudfront.net/spark-2.2.2-bin-hadoop2.7.tgz \
+	&& tar xzfv spark-2.2.2-bin-hadoop2.7.tgz \
+	&& rm spark-2.2.2-bin-hadoop2.7.tgz
 
 COPY docker-entrypoint.sh /
 COPY tpcds-entrypoint.sh /
