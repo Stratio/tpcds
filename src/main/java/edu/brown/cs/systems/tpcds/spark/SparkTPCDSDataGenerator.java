@@ -2,7 +2,6 @@ package edu.brown.cs.systems.tpcds.spark;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
-import org.apache.spark.sql.hive.HiveContext;
 import org.apache.spark.sql.SQLContext;
 
 import com.databricks.spark.sql.perf.tpcds.Tables;

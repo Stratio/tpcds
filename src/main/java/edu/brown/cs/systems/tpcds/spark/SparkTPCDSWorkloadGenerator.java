@@ -7,7 +7,6 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.SparkContext;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
-import org.apache.spark.sql.hive.HiveContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +32,7 @@ public class SparkTPCDSWorkloadGenerator {
 		this.settings = settings;
 		this.sparkConf = new SparkConf().setAppName(name);
 		this.sparkContext = new SparkContext(sparkConf);
-		this.sqlContext = new HiveContext(sparkContext);
+		this.sqlContext = new SQLContext(sparkContext);
 		
 		// Load the tables into memory using the spark-sql-perf Tables code
 		this.tables = new Tables(sqlContext, settings.scaleFactor, settings.numPartitions);
@@ -92,12 +91,7 @@ public class SparkTPCDSWorkloadGenerator {
 		long postLoad = System.currentTimeMillis();
 
 		// Run the query
-		Row[] rows = gen.sqlContext.sql(q.queryText).collect();
-		
-		// Print the output rows
-		for (Row r : rows) {
-			System.out.println(r);
-		}
+		gen.sqlContext.sql(q.queryText).show();
 
 		long postQ = System.currentTimeMillis();
 		System.out.printf("Load time: %d, Query time: %d\n", postLoad-preLoad, postQ-postLoad);

@@ -4,9 +4,15 @@
 	<groupId>edu.brown.cs.systems.tpcds</groupId>
 	<artifactId>spark-workloadgen</artifactId>
 	<packaging>jar</packaging>
-	<version>4.0</version>
+	<version>5.0</version>
 
 	<name>TPC-DS - Spark Workload Generator</name>
+
+	<properties>
+        <scala.minor.version>2.11</scala.minor.version>
+        <scala.version>${scala.minor.version}.8</scala.version>
+        <spark.version>2.2.2</spark.version>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -22,31 +28,25 @@
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-compiler</artifactId>
-			<version>2.10.5</version>
+			<version>${scala.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-library</artifactId>
-			<version>2.10.5</version>
+			<version>${scala.version}</version>
 		</dependency>
 		<!-- <dependency> <groupId>com.databricks</groupId> <artifactId>spark-sql-perf</artifactId> 
 			<version>0.4.5-SNAPSHOT</version> </dependency> -->
 		<dependency>
 			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-core_2.10</artifactId>
-			<version>1.6.1</version>
+			<artifactId>spark-core_${scala.minor.version}</artifactId>
+			<version>${spark.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-sql_2.10</artifactId>
-			<version>1.6.1</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.spark</groupId>
-			<artifactId>spark-hive_2.10</artifactId>
-			<version>1.6.1</version>
+			<artifactId>spark-sql_${scala.minor.version}</artifactId>
+			<version>${spark.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
